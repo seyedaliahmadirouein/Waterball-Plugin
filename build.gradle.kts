@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.example"
-version = "1.0.2"
+version = "1.0.3"
 
 repositories {
     mavenCentral()
@@ -82,19 +82,16 @@ tasks {
         relocate("org.intellij.lang.annotations", "com.example.waterballonz.lib.annotations")
         relocate("org.jetbrains.annotations", "com.example.waterballonz.lib.jbannotations")
 
-        // SQLite relocation
-        relocate("org.sqlite", "com.example.waterballonz.lib.sqlite")
-
-        // NOTE: Adventure (net.kyori.*) is intentionally NOT relocated.
-        // Relocation would break classloader delegation — on Paper, the
-        // parent classloader already provides Adventure, so the plugin's
-        // shaded copy is never loaded. On Spigot, the plugin's shaded copy
-        // is loaded because the parent classloader does not have Adventure
-        // runtime classes (notably MiniMessage).
+        // NOTE: SQLite (org.sqlite.*) is intentionally NOT relocated.
+        // SQLiteJDBC uses JNI to call native code, and the JNI function
+        // names inside the bundled .so/.dll/.dylib files are hardcoded
+        // based on the Java class names (e.g. Java_org_sqlite_core_NativeDB_*).
+        // Relocating the package changes the Java class names but cannot
+        // rewrite the compiled native symbols, so the JVM can no longer
+        // link native methods — java.lang.UnsatisfiedLinkError.
         //
-        // We do NOT use `minimize { ... }` because it strips classes that
-        // are loaded reflectively (Adventure's MiniMessage tags, SQLite's
-        // native loaders, etc.).
+        // NOTE: Adventure (net.kyori.*) is also NOT relocated — see the
+        // comment in the dependencies block above.
     }
 
     processResources {

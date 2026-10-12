@@ -61,8 +61,20 @@ class SqliteStatisticsBackend(
             plugin.logger.info("[WaterBallonZ] SQLite statistics opened at ${dbFile.absolutePath}")
         } catch (e: ClassNotFoundException) {
             plugin.logger.severe("[WaterBallonZ] SQLite JDBC driver not available on the classpath: ${e.message}")
+            throw e
         } catch (e: SQLException) {
             plugin.logger.severe("[WaterBallonZ] SQLite open failed: ${e.message}")
+            throw e
+        } catch (e: UnsatisfiedLinkError) {
+            // The SQLite .so/.dll/.dylib couldn't be linked — typically because
+            // the package was relocated (JNI function names mismatch) or the
+            // host OS/architecture isn't bundled. Re-throw so StatisticsService
+            // catches it at the top level and disables stats gracefully.
+            plugin.logger.severe("[WaterBallonZ] SQLite native library could not be loaded: ${e.message}")
+            throw e
+        } catch (e: NoClassDefFoundError) {
+            plugin.logger.severe("[WaterBallonZ] SQLite class not found: ${e.message}")
+            throw e
         }
     }
 

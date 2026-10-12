@@ -47,15 +47,26 @@ class StatisticsService(
             plugin.logger.info("[WaterBallonZ] Statistics disabled by config.")
             return
         }
-        when (config.statistics.backend.uppercase()) {
-            "SQLITE" -> {
-                val sqlite = SqliteStatisticsBackend(plugin)
-                sqlite.open()
-                backend = sqlite
+        // Wrap in try/catch Throwable — SQLite's UnsatisfiedLinkError, NoClassDefFoundError,
+        // SQLException, etc. must NEVER prevent the plugin from enabling. The plugin can run
+        // perfectly fine without stats; failing here would also prevent /wbz from registering
+        // (which is the user's reported symptom — they only see the plugin.yml usage hint).
+        try {
+            when (config.statistics.backend.uppercase()) {
+                "SQLITE" -> {
+                    val sqlite = SqliteStatisticsBackend(plugin)
+                    sqlite.open()
+                    backend = sqlite
+                    plugin.logger.info("[WaterBallonZ] Statistics backend (SQLite) initialised.")
+                }
+                else -> {
+                    plugin.logger.warning("[WaterBallonZ] Unknown statistics backend '${config.statistics.backend}' — disabled.")
+                }
             }
-            else -> {
-                plugin.logger.warning("[WaterBallonZ] Unknown statistics backend '${config.statistics.backend}' — disabled.")
-            }
+        } catch (t: Throwable) {
+            plugin.logger.severe("[WaterBallonZ] Statistics backend '${config.statistics.backend}' failed to initialise: ${t.javaClass.simpleName}: ${t.message}")
+            plugin.logger.severe("[WaterBallonZ] The plugin will continue to load WITHOUT statistics. To silence this message, set 'statistics.enabled: false' in config.yml.")
+            backend = null
         }
     }
 
