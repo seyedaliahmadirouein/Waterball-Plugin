@@ -89,14 +89,21 @@ class WaterBallonZCommand(private val registry: ServiceRegistry) : CommandExecut
     }
 
     override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<out String>): List<String> {
+        // When the user has typed just "/wbz" or "/wbz " (still on the first
+        // argument slot), suggest every subcommand they have permission for.
+        // This makes the suggestion list appear immediately on the very
+        // first TAB press, instead of waiting for the user to type a letter.
         if (args.size <= 1) {
             val prefix = args.firstOrNull()?.lowercase() ?: ""
             return subcommands
                 .filter { it.hasPermission(sender) }
                 .map { it.name }
                 .filter { it.startsWith(prefix) }
+                .sorted()
         }
-        val sub = byName[args[0].lowercase()] ?: return emptyList()
+        // User has typed "/wbz <subcommand> ..." — delegate to the subcommand.
+        val subName = args[0].lowercase()
+        val sub = byName[subName] ?: return emptyList()
         if (!sub.hasPermission(sender)) return emptyList()
         return sub.tabComplete(registry, sender, args.copyOfRange(1, args.size))
     }

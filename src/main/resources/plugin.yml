@@ -12,11 +12,13 @@ softdepend:
 
 commands:
   waterballonz:
-    description: Root command for WaterBallonZ minigame.
+    description: Root command for WaterBallonZ minigame. Type /wbz help for usage.
     usage: /waterballonz help
     aliases: [ wbz ]
-    permission: waterballonz.play
-    permission-message: "You do not have permission to use WaterBallonZ commands."
+    # No root-level permission: every sub-command performs its own permission
+    # check. Removing the root permission ensures /wbz is always visible in
+    # the Minecraft 1.21 client-side command tree, so it tab-completes for
+    # every player. Sub-commands silently no-op when permission is missing.
 
 permissions:
   waterballonz.*:
