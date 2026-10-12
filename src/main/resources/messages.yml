@@ -1,0 +1,101 @@
+# =========================================================================
+# WaterBallonZ — messages file
+# =========================================================================
+# Supports both legacy colour codes (&c, &l, etc.) and MiniMessage tags
+# (<red>, <bold>, etc.) within the same string.
+# Placeholders use {name} syntax (e.g. {player}, {arena}, {hp}).
+# =========================================================================
+
+prefix: "&8[&6WaterBallonZ&8] &7"
+
+# --- Help ----------------------------------------------------------------
+help.header: "&6WaterBallonZ &7commands:"
+help.line: "  &e/wbz {cmd} &7— {desc}"
+help.usage: "&7Usage: &e{usage}"
+
+# --- Errors --------------------------------------------------------------
+error.unknown_subcommand: "&cUnknown subcommand: {name}. Try &7/wbz help&c."
+error.permission: "&cYou do not have permission to use this command."
+error.player_only: "&cThis command can only be used by players."
+error.invalid_argument: "&cInvalid argument: {msg}"
+error.invalid_state: "&cInvalid state: {msg}"
+error.arena_not_found: "&cArena '&7{arena}&c' not found."
+
+# --- Create --------------------------------------------------------------
+create.success: "&aArena '&7{arena}&a' created."
+create.failure: "&cCould not create arena '&7{arena}&c': {msg}"
+
+# --- Delete --------------------------------------------------------------
+delete.confirm_required: "&eType '&7/wbz delete {arena} confirm&e' to delete."
+delete.success: "&aArena '&7{arena}&a' deleted."
+
+# --- List ----------------------------------------------------------------
+list.header: "&6Arenas &7({count}):"
+list.line: "  &e{arena} &7| &fState: {state} &7| Players: {players}/{max} &7| Enabled: {enabled}"
+list.empty: "&7No arenas configured. Use &e/wbz create <name>&7 to add one."
+
+# --- Info ----------------------------------------------------------------
+info.header: "&6Arena info: &e{arena}"
+info.line: "  &7{key}: &f{value}"
+
+# --- Enable / Disable ----------------------------------------------------
+enable.success: "&aArena '&7{arena}&a' enabled."
+disable.success: "&eArena '&7{arena}&e' disabled."
+
+# --- Lobby ---------------------------------------------------------------
+setlobby.success: "&aLobby set to &7{world}&a at &f({x}, {y}, {z})&a."
+
+# --- Spawn & locations ---------------------------------------------------
+setwaitingroom.success: "&aWaiting room set for arena '&7{arena}&a'."
+setspawn.success: "&a{team}&a team spawn set for arena '&7{arena}&a'."
+setspectator.success: "&aSpectator location set for arena '&7{arena}&a'."
+setmin.success: "&aMinimum players for '&7{arena}&a' set to &f{value}&a."
+setmax.success: "&aMaximum players for '&7{arena}&a' set to &f{value}&a."
+setcountdown.success: "&aCountdown for '&7{arena}&a' set to &f{value}&a seconds."
+
+# --- Join / Leave --------------------------------------------------------
+join.assigned: "{color}You joined the {team_name} Team &7in arena &e{arena}&7."
+join.broadcast: "&7{player} joined (&f{current}/{max}&7)."
+join.failure: "&cCould not join: {msg}"
+leave.success: "&aYou left the arena."
+leave.failure: "&cCould not leave: {msg}"
+
+# --- Countdown -----------------------------------------------------------
+countdown.title: "&a{title}"
+countdown.3: "&c3"
+countdown.2: "&e2"
+countdown.1: "&a1"
+countdown.go: "&a&lGO!"
+countdown.number: "&f{n}"
+countdown.cancelled: "&eCountdown cancelled — not enough players."
+
+# --- Match state ---------------------------------------------------------
+match.start: "&aMatch started! Throw water balls at the enemy!"
+end.victory: "{color}{winner} &ahas won the round!"
+end.draw: "&eThe round ended in a draw."
+end.stopped: "&eThe match was stopped by an admin."
+
+# --- Elimination ---------------------------------------------------------
+elimination.broadcast: "&7{player} &7(&f{team}&7) was eliminated."
+elimination.title: "&cEliminated"
+elimination.subtitle: "&7You are now a spectator."
+
+# --- HUD -----------------------------------------------------------------
+hud.actionbar.hp: "&c&lHp: {hp}% &7| &bAmmo: {ammo} &7| &eCombo: {combo}"
+hud.actionbar.throw: "&7»&f Ammo: {ammo} &7«"
+hud.actionbar.hit: "&a&lHit! &7Combo: {combo} &7(-{damage}%)"
+hud.actionbar.damaged: "&c&lHp: {hp}% &7(damage taken: {damage})"
+hud.actionbar.regen: "&a+{hp}% regenerated"
+hud.actionbar.refill: "&a+1 Water Ball &7(You have {ammo})"
+
+# --- Admin / Reload ------------------------------------------------------
+reload.success: "&aReloaded configuration and arenas."
+forcestart.success: "&aForce-started arena '&7{arena}&a'."
+forcestart.failure: "&cCould not force-start: {msg}"
+stop.success: "&aStopping arena '&7{arena}&a'."
+stop.failure: "&cCould not stop: {msg}"
+
+# --- Stats ---------------------------------------------------------------
+stats.disabled: "&cStatistics are disabled in config.yml."
+stats.header: "&6Statistics for &e{player}&6:"
+stats.line: "  &7{key}: &f{value}"

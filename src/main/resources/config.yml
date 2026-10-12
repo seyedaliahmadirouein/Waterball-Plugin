@@ -1,0 +1,92 @@
+# =========================================================================
+# WaterBallonZ — main configuration file
+# Target: Paper 1.21.x | Java 21 | Kotlin 2.0.x
+# =========================================================================
+# After editing this file, run `/wbz reload` to apply changes. Configuration
+# values are NOT mutated mid-match — an active match keeps the values it
+# started with, and new values apply to future matches.
+# =========================================================================
+
+general:
+  prefix: "&8[&6WaterBallonZ&8] &7"
+  debug: false
+  auto-start: true
+  auto-balance-teams: true
+  restore-player-state: true
+  return-to-lobby-after-match: true
+
+  lobby:
+    # Global lobby destination — players are sent here when leaving a match,
+    # after a finished round, or when they cannot return to their pre-game
+    # location. Use `/wbz setlobby` to set it from in-game.
+    enabled: true
+    # When the configured lobby is unavailable (e.g. world not loaded), fall
+    # back to the first world's spawn location.
+    fallback-to-spawn: true
+    # Prefer the player's pre-game location over the global lobby on leave.
+    return-to-pre-game-location: true
+
+game:
+  minimum-players: 2
+  maximum-players: 16
+  countdown-seconds: 3
+  maximum-duration-seconds: 600       # 10-minute default round time
+  end-delay-seconds: 5                # delay between ENDING and RESETTING
+  require-spectator-location: false   # if true, force the admin to set a spectator location
+
+health:
+  maximum-percent: 100
+  starting-percent: 100
+  regeneration-enabled: true
+  regeneration-interval-seconds: 120
+  regeneration-amount-percent: 5
+
+waterball:
+  starting-amount: 5
+  additional-per-minute: 1
+  maximum-held: 64
+  # Material must be a valid Bukkit material name. SNOWBALL is the default.
+  item-material: SNOWBALL
+  display-name: "&6&lWater Ball &r&7(Click-Right)"
+  lore:
+    - "&7Throw at the enemy to deal damage."
+    - "&cHits in a combo chain deal up to &415%&c per hit!"
+  # Set to 0 to disable custom model data (server-side resource pack feature).
+  custom-model-data: 0
+  # Apply an enchantment glint to the item (cosmetic).
+  enchanted-glint: false
+
+combat:
+  base-damage-percent: 5
+  maximum-damage-percent: 15
+  damage-per-combo-step: 5
+  combo-window-seconds: 3
+  friendly-fire: false
+
+effects:
+  countdown-sound-enabled: true
+  start-sound-enabled: true
+  splash-sound-enabled: true
+  water-particles-enabled: true
+  particle-count: 20
+  refill-sound-enabled: true
+
+hud:
+  health-actionbar-enabled: true
+  # How often (in ticks) the HP action bar refreshes. 20 ticks = 1 second.
+  health-refresh-ticks: 10
+  combo-indicator-enabled: true
+  scoreboard-enabled: false
+
+disconnect:
+  # When true, a player disconnecting mid-match is treated as an elimination.
+  eliminate-on-disconnect: true
+  reconnect-enabled: false
+  reconnect-grace-seconds: 30
+
+statistics:
+  enabled: true
+  backend: SQLITE
+
+integrations:
+  placeholderapi-enabled: true
