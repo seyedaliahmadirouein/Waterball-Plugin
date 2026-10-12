@@ -5,19 +5,33 @@ import com.example.waterballonz.configuration.ConfigManager
 import com.example.waterballonz.util.LegacyColor
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.command.CommandSender
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import java.io.File
 
 /**
- * Provides Adventure `Component` messages resolved from `messages.yml`.
+ * Provides message resolution for WaterBallonZ.
  *
- * Supports two formatting syntaxes:
+ * Internally builds Adventure [Component] instances from messages.yml (so
+ * MiniMessage and legacy `&` codes both work). When sending to players,
+ * however, the component is serialized back to a legacy `§`-coloured
+ * [String] and dispatched via the **string-based** Bukkit API methods
+ * (`sendMessage(String)`, `sendActionBar(String)`, `sendTitle(...)`).
+ *
+ * Why? Because the Adventure `sendMessage(Component)` convenience overloads
+ * on `CommandSender` / `Player` exist in Paper's API jar but are not
+ * declared directly on the Bukkit `CommandSender` interface at runtime in
+ * Spigot 1.21 — calling them throws `NoSuchMethodError`. The string-based
+ * API is present on every Bukkit/Spigot version since 1.16, so the plugin
+ * works identically on Paper and Spigot.
+ *
+ * Formatting syntaxes supported in messages.yml:
  *  - Legacy ampersand codes (`&c`, `&l`, etc.) — auto-converted.
  *  - MiniMessage tags (`<red>`, `<bold>`) — preserved.
  *
- * Placeholders are replaced via simple `{name}` tokens.
+ * Placeholders use `{name}` tokens, e.g. `{player}`, `{arena}`.
  */
 class MessageService(
     private val plugin: WaterBallonZPlugin,
@@ -25,6 +39,7 @@ class MessageService(
 ) {
     private val messages: MutableMap<String, String> = mutableMapOf()
     private val mini = MiniMessage.miniMessage()
+    private val legacySerializer = LegacyComponentSerializer.legacySection()
 
     fun reload() {
         val file = File(plugin.dataFolder, "messages.yml")
@@ -68,12 +83,29 @@ class MessageService(
         return mini.deserialize(miniText)
     }
 
+    /** Serialize an Adventure Component into a legacy `§`-coloured string. */
+    fun toLegacy(component: Component): String = legacySerializer.serialize(component)
+
+    /** Resolve a key into a legacy `§`-coloured string (with prefix applied). */
+    fun legacy(key: String, vararg placeholders: Pair<String, Any?>): String =
+        toLegacy(get(key, *placeholders))
+
+    /** Resolve a key into a legacy `§`-coloured string (without prefix). */
+    fun legacyRaw(key: String, vararg placeholders: Pair<String, Any?>): String =
+        toLegacy(getRaw(key, *placeholders))
+
+    // ----------------------------------------------------------------
+    // Senders — all use Bukkit's string-based API for cross-platform
+    // compatibility (Spigot 1.21 + Paper 1.21+).
+    // ----------------------------------------------------------------
+
     fun send(sender: CommandSender, key: String, vararg placeholders: Pair<String, Any?>) {
-        sender.sendMessage(get(key, *placeholders))
+        sender.sendMessage(legacy(key, *placeholders))
     }
 
     fun sendActionBar(player: Player, key: String, vararg placeholders: Pair<String, Any?>) {
-        player.sendActionBar(getRaw(key, *placeholders))
+        // Player#sendActionBar(String) exists on both Spigot and Paper.
+        player.sendActionBar(legacyRaw(key, *placeholders))
     }
 
     fun sendTitle(
@@ -85,17 +117,12 @@ class MessageService(
         fadeOut: Int = 10,
         vararg placeholders: Pair<String, Any?>,
     ) {
-        val title = getRaw(titleKey, *placeholders)
-        val subtitle = getRaw(subtitleKey, *placeholders)
-        player.showTitle(net.kyori.adventure.title.Title.title(
-            title,
-            subtitle,
-            net.kyori.adventure.title.Title.Times.times(
-                java.time.Duration.ofMillis(fadeIn * 50L),
-                java.time.Duration.ofMillis(stay * 50L),
-                java.time.Duration.ofMillis(fadeOut * 50L),
-            )
-        ))
+        // Player#sendTitle(String, String, int, int, int) exists on both
+        // Spigot 1.21 and Paper 1.21+. Avoids the Adventure Title API,
+        // which requires Paper-specific overloads on Player.
+        val title = legacyRaw(titleKey, *placeholders)
+        val subtitle = legacyRaw(subtitleKey, *placeholders)
+        player.sendTitle(title, subtitle, fadeIn, stay, fadeOut)
     }
 
     private fun substitute(template: String, placeholders: Array<out Pair<String, Any?>>): String {

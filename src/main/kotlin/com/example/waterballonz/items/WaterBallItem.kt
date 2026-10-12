@@ -5,12 +5,13 @@ import com.example.waterballonz.configuration.GameConfig
 import com.example.waterballonz.util.LegacyColor
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.meta.Damageable
+import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.persistence.PersistentDataType
 
@@ -20,6 +21,13 @@ import org.bukkit.persistence.PersistentDataType
  * Authentic WaterBalls are identified by a PersistentDataContainer marker
  * under the [markerKey] namespaced key. The visible display name, material,
  * and lore are never used to authenticate — only the marker.
+ *
+ * NOTE: Item display name and lore are set via the legacy `§`-coloured
+ * string methods (`setDisplayName(String)`, `setLore(List<String>)`)
+ * rather than the Adventure `displayName(Component)` / `lore(List<Component>)`
+ * overloads. The Adventure overloads exist on Paper's ItemMeta but are not
+ * declared on Spigot's runtime ItemMeta interface, so calling them would
+ * throw `NoSuchMethodError`. The string-based methods exist on both.
  */
 class WaterBallItem(
     private val plugin: WaterBallonZPlugin,
@@ -30,6 +38,7 @@ class WaterBallItem(
     val matchIdKey: NamespacedKey = NamespacedKey(plugin, "waterball_match_id")
 
     private val mini = MiniMessage.miniMessage()
+    private val legacySerializer = LegacyComponentSerializer.legacySection()
 
     val material: Material by lazy {
         Material.matchMaterial(config.waterball.itemMaterial)
@@ -43,11 +52,11 @@ class WaterBallItem(
         val stack = ItemStack(material, amount)
         val meta = stack.itemMeta ?: return stack
 
-        meta.displayName(mini.deserialize(LegacyColor.toMiniMessage(config.waterball.displayName)))
+        // Use the legacy string methods (work on both Spigot and Paper).
+        meta.setDisplayName(toLegacyString(config.waterball.displayName))
 
         if (config.waterball.lore.isNotEmpty()) {
-            val lore = config.waterball.lore.map { mini.deserialize(LegacyColor.toMiniMessage(it)) }
-            meta.lore(lore)
+            meta.lore = config.waterball.lore.map { toLegacyString(it) }
         }
 
         val pdc: PersistentDataContainer = meta.persistentDataContainer
@@ -88,4 +97,11 @@ class WaterBallItem(
 
     fun displayName(): Component =
         mini.deserialize(LegacyColor.toMiniMessage(config.waterball.displayName))
+
+    /** Convert a (possibly legacy-coded) message string into a §-coloured legacy string. */
+    private fun toLegacyString(text: String): String {
+        val component = mini.deserialize(LegacyColor.toMiniMessage(text))
+        return legacySerializer.serialize(component)
+    }
 }
+
