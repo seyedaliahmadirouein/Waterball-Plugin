@@ -42,15 +42,40 @@ class MessageService(
     private val legacySerializer = LegacyComponentSerializer.legacySection()
 
     fun reload() {
+        // Step 1: Load the BUNDLED defaults from the JAR. This ensures that
+        // every message key defined in the source code is always available,
+        // even if the user's existing messages.yml file is from an older
+        // plugin version that doesn't have keys added in later releases
+        // (e.g. command.usage.* keys added in v1.0.5).
+        val defaultsYaml = YamlConfiguration()
+        plugin.getResource("messages.yml")?.use { input ->
+            val reader = input.bufferedReader()
+            // Read all lines and load through YAML — the bundled file is
+            // always fresh and authoritative for missing keys.
+            val text = reader.readText()
+            defaultsYaml.loadFromString(text)
+        }
+
+        messages.clear()
+        // Populate from defaults first.
+        defaultsYaml.getKeys(true).forEach { key ->
+            val value = defaultsYaml.getString(key) ?: ""
+            if (value.isNotEmpty()) messages[key] = value
+        }
+
+        // Step 2: If the user has a messages.yml on disk, overlay their
+        // customisations on top of the defaults. Missing keys still fall
+        // back to the bundled default.
         val file = File(plugin.dataFolder, "messages.yml")
         if (!file.exists()) {
             plugin.saveResource("messages.yml", false)
         }
-        val yaml = YamlConfiguration.loadConfiguration(file)
-        messages.clear()
-        yaml.getKeys(true).forEach { key ->
-            val value = yaml.getString(key) ?: ""
-            if (value.isNotEmpty()) messages[key] = value
+        if (file.exists()) {
+            val userYaml = YamlConfiguration.loadConfiguration(file)
+            userYaml.getKeys(true).forEach { key ->
+                val value = userYaml.getString(key) ?: ""
+                if (value.isNotEmpty()) messages[key] = value
+            }
         }
     }
 

@@ -48,6 +48,11 @@ class WaterBallonZPlugin : JavaPlugin() {
 
         // Messages
         val messageService = MessageService(this, configManager)
+        // IMPORTANT: load messages.yml into memory. Without this, every
+        // message key lookup returns the literal key string (e.g. "help.header")
+        // instead of the actual text, because messages is empty until reload()
+        // is called once.
+        messageService.reload()
 
         // Scheduler abstraction (Paper-friendly, swappable for Folia later)
         val scheduler = WbzScheduler(this)
