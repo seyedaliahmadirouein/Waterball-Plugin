@@ -20,6 +20,8 @@ data class GameConfig(
     val disconnect: DisconnectConfig,
     val statistics: StatisticsConfig,
     val integrations: IntegrationsConfig,
+    val snowball: SnowballConfig,
+    val feedback: FeedbackConfig,
 ) {
     val lobby: LobbyConfig get() = general.lobby
 
@@ -106,6 +108,44 @@ data class GameConfig(
 
     data class IntegrationsConfig(
         val placeholderapiEnabled: Boolean,
+    )
+
+    /**
+     * Snowball projectile + tracker configuration.
+     *
+     * Per spec sections 4, 6, 9, 10: damage, knockback, tracker,
+     * and cleanup tuning all live here.
+     */
+    data class SnowballConfig(
+        val velocity: Double,                  // blocks per second
+        val damageMobs: Boolean,               // apply vanilla damage to mobs?
+        val mobDamage: Double,                  // vanilla damage amount for mobs
+        val tracker: TrackerConfig,
+        val knockback: KnockbackConfig,
+    ) {
+        data class TrackerConfig(
+            val armorStandEnabled: Boolean,      // spawn invisible ArmorStand follower?
+        )
+        data class KnockbackConfig(
+            val horizontal: Double,              // horizontal push strength
+            val vertical: Double,                // vertical pop strength
+        )
+    }
+
+    /**
+     * Combat feedback / subtitle configuration.
+     *
+     * Per spec sections 1, 11: hex gradients, configurable timing,
+     * separate toggles for attacker / victim / friendly-fire feedback.
+     */
+    data class FeedbackConfig(
+        val subtitleFadeInTicks: Int,
+        val subtitleStayTicks: Int,
+        val subtitleFadeOutTicks: Int,
+        val showAttackerFeedback: Boolean,
+        val showVictimFeedback: Boolean,
+        val showFriendlyFireFeedback: Boolean,
+        val useHexGradients: Boolean,
     )
 }
 

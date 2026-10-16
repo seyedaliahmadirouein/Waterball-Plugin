@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.waterballonz.arena.ArenaStateTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-16T07:40:57" hostname="c-6ad1d0a1-145cf406-c15e99ab7e0e" time="0.143">
+  <properties/>
+  <testcase name="RESETTING can transition to WAITING or DISABLED()" classname="com.example.waterballonz.arena.ArenaStateTest" time="0.095"/>
+  <testcase name="DISABLED can transition to WAITING()" classname="com.example.waterballonz.arena.ArenaStateTest" time="0.005"/>
+  <testcase name="WAITING can transition to DISABLED or STARTING()" classname="com.example.waterballonz.arena.ArenaStateTest" time="0.002"/>
+  <testcase name="illegal transitions are rejected()" classname="com.example.waterballonz.arena.ArenaStateTest" time="0.001"/>
+  <testcase name="COUNTDOWN can transition to IN_GAME or back to WAITING()" classname="com.example.waterballonz.arena.ArenaStateTest" time="0.001"/>
+  <testcase name="STARTING can transition to COUNTDOWN or back to WAITING()" classname="com.example.waterballonz.arena.ArenaStateTest" time="0.004"/>
+  <testcase name="ENDING can transition to RESETTING()" classname="com.example.waterballonz.arena.ArenaStateTest" time="0.001"/>
+  <testcase name="all disabled arenas can disable from any state()" classname="com.example.waterballonz.arena.ArenaStateTest" time="0.009"/>
+  <testcase name="IN_GAME can transition to ENDING()" classname="com.example.waterballonz.arena.ArenaStateTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

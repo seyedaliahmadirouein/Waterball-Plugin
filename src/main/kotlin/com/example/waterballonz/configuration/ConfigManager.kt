@@ -133,6 +133,29 @@ class ConfigManager(private val plugin: WaterBallonZPlugin) {
             placeholderapiEnabled = yaml.getBoolean("integrations.placeholderapi-enabled", true),
         )
 
+        val snowball = GameConfig.SnowballConfig(
+            velocity = yaml.getDouble("snowball.velocity", 3.0),
+            damageMobs = yaml.getBoolean("snowball.damage-mobs", false),
+            mobDamage = yaml.getDouble("snowball.mob-damage", 2.0),
+            tracker = GameConfig.SnowballConfig.TrackerConfig(
+                armorStandEnabled = yaml.getBoolean("snowball.tracker.armor-stand-enabled", false),
+            ),
+            knockback = GameConfig.SnowballConfig.KnockbackConfig(
+                horizontal = yaml.getDouble("snowball.knockback.horizontal", 0.35),
+                vertical = yaml.getDouble("snowball.knockback.vertical", 0.15),
+            ),
+        )
+
+        val feedback = GameConfig.FeedbackConfig(
+            subtitleFadeInTicks = yaml.getInt("feedback.subtitle.fade-in-ticks", 2),
+            subtitleStayTicks = yaml.getInt("feedback.subtitle.stay-ticks", 30),
+            subtitleFadeOutTicks = yaml.getInt("feedback.subtitle.fade-out-ticks", 5),
+            showAttackerFeedback = yaml.getBoolean("feedback.show-attacker-feedback", true),
+            showVictimFeedback = yaml.getBoolean("feedback.show-victim-feedback", true),
+            showFriendlyFireFeedback = yaml.getBoolean("feedback.show-friendly-fire-feedback", true),
+            useHexGradients = yaml.getBoolean("feedback.use-hex-gradients", true),
+        )
+
         return GameConfig(
             general = general,
             game = game,
@@ -144,6 +167,8 @@ class ConfigManager(private val plugin: WaterBallonZPlugin) {
             disconnect = disconnect,
             statistics = statistics,
             integrations = integrations,
+            snowball = snowball,
+            feedback = feedback,
         )
     }
 }

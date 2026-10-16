@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.waterballonz.team.TeamBalancerTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-16T07:40:57" hostname="c-6ad1d0a1-145cf406-c15e99ab7e0e" time="0.084">
+  <properties/>
+  <testcase name="no duplicate membership()" classname="com.example.waterballonz.team.TeamBalancerTest" time="0.008"/>
+  <testcase name="remove returns the team the player was on()" classname="com.example.waterballonz.team.TeamBalancerTest" time="0.008"/>
+  <testcase name="3 players are split 2-1()" classname="com.example.waterballonz.team.TeamBalancerTest" time="0.002"/>
+  <testcase name="4 players are split 2-2()" classname="com.example.waterballonz.team.TeamBalancerTest" time="0.002"/>
+  <testcase name="teamOf returns the team after assignment()" classname="com.example.waterballonz.team.TeamBalancerTest" time="0.002"/>
+  <testcase name="clear empties both teams()" classname="com.example.waterballonz.team.TeamBalancerTest" time="0.001"/>
+  <testcase name="5 players are split 3-2()" classname="com.example.waterballonz.team.TeamBalancerTest" time="0.049"/>
+  <testcase name="maximum capacity is enforced()" classname="com.example.waterballonz.team.TeamBalancerTest" time="0.002"/>
+  <testcase name="2 players are split 1-1()" classname="com.example.waterballonz.team.TeamBalancerTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.waterballonz.combat.ComboTrackerTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-10-16T07:40:57" hostname="c-6ad1d0a1-145cf406-c15e99ab7e0e" time="0.055">
+  <properties/>
+  <testcase name="cleanupDisconnectedPlayers removes stale entries()" classname="com.example.waterballonz.combat.ComboTrackerTest" time="0.01"/>
+  <testcase name="boundary - hit at exactly lastHit + window is treated as still inside()" classname="com.example.waterballonz.combat.ComboTrackerTest" time="0.001"/>
+  <testcase name="negative or zero combo window is rejected()" classname="com.example.waterballonz.combat.ComboTrackerTest" time="0.001"/>
+  <testcase name="hit after combo window resets to 5()" classname="com.example.waterballonz.combat.ComboTrackerTest" time="0.001"/>
+  <testcase name="fourth and later consecutive hits remain capped at 15()" classname="com.example.waterballonz.combat.ComboTrackerTest" time="0.001"/>
+  <testcase name="third consecutive hit returns 15()" classname="com.example.waterballonz.combat.ComboTrackerTest" time="0.0"/>
+  <testcase name="lastHitAt exposes the recorded timestamp()" classname="com.example.waterballonz.combat.ComboTrackerTest" time="0.002"/>
+  <testcase name="first enemy hit returns 5 damage()" classname="com.example.waterballonz.combat.ComboTrackerTest" time="0.002"/>
+  <testcase name="recordEnemyHit honours custom base, step and cap()" classname="com.example.waterballonz.combat.ComboTrackerTest" time="0.001"/>
+  <testcase name="two attackers maintain independent combo states()" classname="com.example.waterballonz.combat.ComboTrackerTest" time="0.002"/>
+  <testcase name="second consecutive hit returns 10()" classname="com.example.waterballonz.combat.ComboTrackerTest" time="0.001"/>
+  <testcase name="reset clears the corresponding player's combo()" classname="com.example.waterballonz.combat.ComboTrackerTest" time="0.001"/>
+  <testcase name="resetAll clears every player()" classname="com.example.waterballonz.combat.ComboTrackerTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -90,3 +90,51 @@ statistics:
 
 integrations:
   placeholderapi-enabled: true
+
+# =========================================================================
+# Snowball projectile & tracker configuration (v2.0.0)
+# =========================================================================
+# Per spec sections 4 (tracker), 6 (follow snowball), 9 (damage),
+# 10 (knockback), 14 (cleanup).
+snowball:
+  # Projectile launch velocity in blocks per second. Vanilla snowballs travel
+  # at ~3.0; increasing this makes throws faster and longer-ranged.
+  velocity: 3.0
+
+  # Should WaterBalls apply vanilla Minecraft damage to mobs (zombies,
+  # skeletons, etc.)? Default false — this is a player-vs-player minigame.
+  damage-mobs: false
+  # When damage-mobs is true, how much vanilla damage to apply.
+  mob-damage: 2.0
+
+  tracker:
+    # Spawn an invisible, no-gravity ArmorStand that follows each thrown
+    # snowball. Used as a FALLBACK ownership path if the snowball's `shooter`
+    # field is null by the time it hits something. The native Bukkit PDC
+    # marker is the primary attribution mechanism; the ArmorStand is a
+    # belt-and-suspenders backup.
+    # Default: false — the primary PDC tracker is sufficient on its own.
+    # Enable only if you observe hit-attribution failures on your server.
+    armor-stand-enabled: false
+
+  knockback:
+    # Horizontal push strength applied to a victim on a successful enemy hit.
+    # Vanilla PvP knockback is ~0.4. 0.35 gives a small but noticeable shove.
+    horizontal: 0.35
+    # Vertical pop strength. 0.15 = small hop; 0.4 = full jump height.
+    vertical: 0.15
+
+# =========================================================================
+# Combat feedback / subtitle configuration (v2.0.0)
+# =========================================================================
+# Per spec sections 1 (subtitle system) and 11 (HP-loss subtitle).
+# Uses MiniMessage hex gradients: <gradient:#ff5555:#ffaa00>-5% HP</gradient>
+feedback:
+  subtitle:
+    fade-in-ticks: 2       # 100ms — snappy
+    stay-ticks: 30         # 1.5 seconds
+    fade-out-ticks: 5      # 250ms
+  show-attacker-feedback: true       # action-bar "HIT PlayerName (combo ×N)"
+  show-victim-feedback: true         # subtitle "-5% HP (95% left)"
+  show-friendly-fire-feedback: true # subtitle "Friendly Fire — PlayerName is on your team"
+  use-hex-gradients: true            # use MiniMessage hex gradients; fall back to nearest solid colour on Spigot

@@ -35,6 +35,22 @@ class TeamBalancerTest {
         disconnect = GameConfig.DisconnectConfig(true, false, 30),
         statistics = GameConfig.StatisticsConfig(true, "SQLITE"),
         integrations = GameConfig.IntegrationsConfig(true),
+        snowball = GameConfig.SnowballConfig(
+            velocity = 3.0,
+            damageMobs = false,
+            mobDamage = 2.0,
+            tracker = GameConfig.SnowballConfig.TrackerConfig(armorStandEnabled = false),
+            knockback = GameConfig.SnowballConfig.KnockbackConfig(horizontal = 0.35, vertical = 0.15),
+        ),
+        feedback = GameConfig.FeedbackConfig(
+            subtitleFadeInTicks = 2,
+            subtitleStayTicks = 30,
+            subtitleFadeOutTicks = 5,
+            showAttackerFeedback = true,
+            showVictimFeedback = true,
+            showFriendlyFireFeedback = true,
+            useHexGradients = true,
+        ),
     )
 
     @BeforeEach

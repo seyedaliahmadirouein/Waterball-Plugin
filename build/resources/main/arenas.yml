@@ -1,0 +1,41 @@
+# =========================================================================
+# WaterBallonZ — arenas configuration
+# =========================================================================
+# Arenas are defined here. Use the in-game commands instead of editing this
+# file directly:
+#
+#   /wbz create waterballonz_1
+#   /wbz setlobby
+#   /wbz setwaitingroom waterballonz_1
+#   /wbz setspawn waterballonz_1 red
+#   /wbz setspawn waterballonz_1 blue
+#   /wbz setspectator waterballonz_1
+#   /wbz setmin waterballonz_1 2
+#   /wbz setmax waterballonz_1 16
+#   /wbz info waterballonz_1
+#   /wbz enable waterballonz_1
+#
+# Each arena supports:
+#   enabled:                     bool
+#   minimum-players:             int
+#   maximum-players:             int
+#   countdown-seconds:           int
+#   maximum-duration-seconds:    int
+#   team-balance-strategy:       "auto" | "none"
+#   auto-restart:                bool
+#   victory-message:             string (optional)
+#   draw-message:                string (optional)
+#
+#   locations:
+#     waiting-room:  { world, x, y, z, yaw, pitch }
+#     red-spawn:     { world, x, y, z, yaw, pitch }
+#     blue-spawn:    { world, x, y, z, yaw, pitch }
+#     spectator:     { world, x, y, z, yaw, pitch }   (optional)
+#
+#   boundary: (optional)
+#     world: string
+#     min-x, min-y, min-z: double
+#     max-x, max-y, max-z: double
+# =========================================================================
+
+arenas: {}

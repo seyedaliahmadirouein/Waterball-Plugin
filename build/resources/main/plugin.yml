@@ -1,0 +1,72 @@
+name: WaterBallonZ
+version: 2.0.0
+main: com.example.waterballonz.WaterBallonZPlugin
+api-version: '1.21'
+author: seyedaliahmadirouein
+description: A competitive, round-based, two-team water-balloon minigame for Paper 1.21+.
+website: https://github.com/seyedaliahmadirouein/Waterball-Plugin
+folia-supported: false
+
+softdepend:
+  - PlaceholderAPI
+
+commands:
+  waterballonz:
+    description: Root command for WaterBallonZ minigame. Type /wbz help for usage.
+    usage: /waterballonz help
+    aliases: [ wbz ]
+    # No root-level permission: every sub-command performs its own permission
+    # check. Removing the root permission ensures /wbz is always visible in
+    # the Minecraft 1.21 client-side command tree, so it tab-completes for
+    # every player. Sub-commands silently no-op when permission is missing.
+
+permissions:
+  waterballonz.*:
+    description: All WaterBallonZ permissions.
+    default: op
+    children:
+      waterballonz.play: true
+      waterballonz.join: true
+      waterballonz.leave: true
+      waterballonz.spectate: true
+      waterballonz.admin: true
+      waterballonz.bypass: true
+  waterballonz.play:
+    description: Allows basic access to /waterballonz.
+    default: true
+  waterballonz.join:
+    description: Allows joining arenas.
+    default: true
+  waterballonz.leave:
+    description: Allows leaving arenas and matches.
+    default: true
+  waterballonz.spectate:
+    description: Allows spectating active matches.
+    default: true
+  waterballonz.admin:
+    description: Administrator access to all sub-commands.
+    default: op
+    children:
+      waterballonz.admin.arena: true
+      waterballonz.admin.start: true
+      waterballonz.admin.stop: true
+      waterballonz.admin.reload: true
+      waterballonz.admin.stats: true
+  waterballonz.admin.arena:
+    description: Create, delete, configure, enable and disable arenas.
+    default: op
+  waterballonz.admin.start:
+    description: Force-start an arena.
+    default: op
+  waterballonz.admin.stop:
+    description: Force-stop an arena.
+    default: op
+  waterballonz.admin.reload:
+    description: Reload WaterBallonZ configuration.
+    default: op
+  waterballonz.admin.stats:
+    description: View and reset statistics.
+    default: op
+  waterballonz.bypass:
+    description: Bypass certain movement or arena restrictions. Does NOT bypass combat validation.
+    default: op

@@ -1,0 +1,140 @@
+# =========================================================================
+# WaterBallonZ — main configuration file
+# Target: Paper 1.21.x | Java 21 | Kotlin 2.0.x
+# =========================================================================
+# After editing this file, run `/wbz reload` to apply changes. Configuration
+# values are NOT mutated mid-match — an active match keeps the values it
+# started with, and new values apply to future matches.
+# =========================================================================
+
+general:
+  prefix: "&8[&6WaterBallonZ&8] &7"
+  debug: false
+  auto-start: true
+  auto-balance-teams: true
+  restore-player-state: true
+  return-to-lobby-after-match: true
+
+  lobby:
+    # Global lobby destination — players are sent here when leaving a match,
+    # after a finished round, or when they cannot return to their pre-game
+    # location. Use `/wbz setlobby` to set it from in-game.
+    enabled: true
+    # When the configured lobby is unavailable (e.g. world not loaded), fall
+    # back to the first world's spawn location.
+    fallback-to-spawn: true
+    # Prefer the player's pre-game location over the global lobby on leave.
+    return-to-pre-game-location: true
+
+game:
+  minimum-players: 2
+  maximum-players: 16
+  countdown-seconds: 3
+  maximum-duration-seconds: 600       # 10-minute default round time
+  end-delay-seconds: 5                # delay between ENDING and RESETTING
+  require-spectator-location: false   # if true, force the admin to set a spectator location
+
+health:
+  maximum-percent: 100
+  starting-percent: 100
+  regeneration-enabled: true
+  regeneration-interval-seconds: 120
+  regeneration-amount-percent: 5
+
+waterball:
+  starting-amount: 5
+  additional-per-minute: 1
+  maximum-held: 64
+  # Material must be a valid Bukkit material name. SNOWBALL is the default.
+  item-material: SNOWBALL
+  display-name: "&6&lWater Ball &r&7(Click-Right)"
+  lore:
+    - "&7Throw at the enemy to deal damage."
+    - "&cHits in a combo chain deal up to &415%&c per hit!"
+  # Set to 0 to disable custom model data (server-side resource pack feature).
+  custom-model-data: 0
+  # Apply an enchantment glint to the item (cosmetic).
+  enchanted-glint: false
+
+combat:
+  base-damage-percent: 5
+  maximum-damage-percent: 15
+  damage-per-combo-step: 5
+  combo-window-seconds: 3
+  friendly-fire: false
+
+effects:
+  countdown-sound-enabled: true
+  start-sound-enabled: true
+  splash-sound-enabled: true
+  water-particles-enabled: true
+  particle-count: 20
+  refill-sound-enabled: true
+
+hud:
+  health-actionbar-enabled: true
+  # How often (in ticks) the HP action bar refreshes. 20 ticks = 1 second.
+  health-refresh-ticks: 10
+  combo-indicator-enabled: true
+  scoreboard-enabled: false
+
+disconnect:
+  # When true, a player disconnecting mid-match is treated as an elimination.
+  eliminate-on-disconnect: true
+  reconnect-enabled: false
+  reconnect-grace-seconds: 30
+
+statistics:
+  enabled: true
+  backend: SQLITE
+
+integrations:
+  placeholderapi-enabled: true
+
+# =========================================================================
+# Snowball projectile & tracker configuration (v2.0.0)
+# =========================================================================
+# Per spec sections 4 (tracker), 6 (follow snowball), 9 (damage),
+# 10 (knockback), 14 (cleanup).
+snowball:
+  # Projectile launch velocity in blocks per second. Vanilla snowballs travel
+  # at ~3.0; increasing this makes throws faster and longer-ranged.
+  velocity: 3.0
+
+  # Should WaterBalls apply vanilla Minecraft damage to mobs (zombies,
+  # skeletons, etc.)? Default false — this is a player-vs-player minigame.
+  damage-mobs: false
+  # When damage-mobs is true, how much vanilla damage to apply.
+  mob-damage: 2.0
+
+  tracker:
+    # Spawn an invisible, no-gravity ArmorStand that follows each thrown
+    # snowball. Used as a FALLBACK ownership path if the snowball's `shooter`
+    # field is null by the time it hits something. The native Bukkit PDC
+    # marker is the primary attribution mechanism; the ArmorStand is a
+    # belt-and-suspenders backup.
+    # Default: false — the primary PDC tracker is sufficient on its own.
+    # Enable only if you observe hit-attribution failures on your server.
+    armor-stand-enabled: false
+
+  knockback:
+    # Horizontal push strength applied to a victim on a successful enemy hit.
+    # Vanilla PvP knockback is ~0.4. 0.35 gives a small but noticeable shove.
+    horizontal: 0.35
+    # Vertical pop strength. 0.15 = small hop; 0.4 = full jump height.
+    vertical: 0.15
+
+# =========================================================================
+# Combat feedback / subtitle configuration (v2.0.0)
+# =========================================================================
+# Per spec sections 1 (subtitle system) and 11 (HP-loss subtitle).
+# Uses MiniMessage hex gradients: <gradient:#ff5555:#ffaa00>-5% HP</gradient>
+feedback:
+  subtitle:
+    fade-in-ticks: 2       # 100ms — snappy
+    stay-ticks: 30         # 1.5 seconds
+    fade-out-ticks: 5      # 250ms
+  show-attacker-feedback: true       # action-bar "HIT PlayerName (combo ×N)"
+  show-victim-feedback: true         # subtitle "-5% HP (95% left)"
+  show-friendly-fire-feedback: true # subtitle "Friendly Fire — PlayerName is on your team"
+  use-hex-gradients: true            # use MiniMessage hex gradients; fall back to nearest solid colour on Spigot

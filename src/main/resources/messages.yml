@@ -20,6 +20,7 @@ error.player_only: "&cThis command can only be used by players."
 error.invalid_argument: "&cInvalid argument: {msg}"
 error.invalid_state: "&cInvalid state: {msg}"
 error.arena_not_found: "&cArena '&7{arena}&c' not found."
+error.throw_not_allowed: "&cYou cannot throw WaterBalls right now."
 
 # --- Create --------------------------------------------------------------
 create.success: "&aArena '&7{arena}&a' created."

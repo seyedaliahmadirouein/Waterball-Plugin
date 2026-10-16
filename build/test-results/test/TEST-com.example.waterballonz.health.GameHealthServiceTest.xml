@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.waterballonz.health.GameHealthServiceTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-10-16T07:40:57" hostname="c-6ad1d0a1-145cf406-c15e99ab7e0e" time="0.028">
+  <properties/>
+  <testcase name="HP starts at configured starting percent()" classname="com.example.waterballonz.health.GameHealthServiceTest" time="0.001"/>
+  <testcase name="applyDamage with negative input is clamped()" classname="com.example.waterballonz.health.GameHealthServiceTest" time="0.001"/>
+  <testcase name="HP never exceeds maximum()" classname="com.example.waterballonz.health.GameHealthServiceTest" time="0.001"/>
+  <testcase name="regeneration stops at the configured maximum()" classname="com.example.waterballonz.health.GameHealthServiceTest" time="0.001"/>
+  <testcase name="HP never falls below zero()" classname="com.example.waterballonz.health.GameHealthServiceTest" time="0.001"/>
+  <testcase name="disabled regeneration produces no change()" classname="com.example.waterballonz.health.GameHealthServiceTest" time="0.001"/>
+  <testcase name="5 damage reduces HP from 100 to 95()" classname="com.example.waterballonz.health.GameHealthServiceTest" time="0.001"/>
+  <testcase name="positive HP is not eliminated()" classname="com.example.waterballonz.health.GameHealthServiceTest" time="0.002"/>
+  <testcase name="zero HP triggers elimination()" classname="com.example.waterballonz.health.GameHealthServiceTest" time="0.001"/>
+  <testcase name="15 damage on 10 HP reduces to 0 (clamped, not negative)()" classname="com.example.waterballonz.health.GameHealthServiceTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
